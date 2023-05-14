@@ -1,0 +1,84 @@
+<div class="form-group my-3">
+    <form (ngSubmit)="entradausuario()" [formGroup]="newusuarioForm" class="row">
+      <label for="nombre" class="form-label col text-end">Usuario</label>
+      <input
+        type="text"
+        placeholder="nombre"
+        name="nombre"
+        formControlName="nombre"
+        class="col"
+      />
+  
+      <label for="email" class="form-label col text-end">email</label>
+      <input
+        type="text"
+        placeholder="email"
+        name="email"
+        formControlName="email"
+        class="col"
+      />
+      <label for="clave" class="form-label col text-end">clave</label>
+      <input
+        type="text"
+        placeholder="clave"
+        name="clave"
+        formControlName="clave"
+        class="col"
+      />
+      <div class="col text-center">
+        <button type="submit" class="btn btn-primary">Crear</button>
+      </div>
+    </form>
+    <div class="row">
+      <div class="col">
+        <div *ngIf="nombre?.invalid && nombre?.dirty">
+          <!-- <small
+            class="form-text text-danger"
+            *ngIf="nombre?.errors?.['minlength'] || nombre?.errors?.['maxlength']"
+            >Usuario corto o largo</small
+          > -->
+          <small
+            class="form-text text-danger"
+            *ngIf="nombre?.errors?.['required']"
+          >
+            *
+          </small>
+        </div>
+      </div>
+      <div class="col">
+        <div *ngIf="email?.invalid && email?.dirty">
+          <!-- <small
+            class="form-text text-danger"
+            *ngIf="email?.errors?.['minlength']"
+            >email corto</small
+          > -->
+          <small
+            class="form-text text-danger"
+            *ngIf="email?.errors?.['required']"
+          >
+            *
+          </small>
+        </div>
+      </div>
+      <!-- <div class="col">
+        <div *ngIf="clave?.invalid && clave?.dirty">
+          <small class="form-text text-danger" *ngIf="clave?.errors?.['pattern']">
+            La clave debe tener al menos una letra mayúscula, un número y un caracter especial (!@#$%^&*) y una longitud mínima de 7 caracteres y máxima de 40 caracteres.
+          </small>
+        </div>
+      </div> -->
+        
+    
+    
+  </div>
+  </div>
+  <div class="row">
+    <div *ngIf="message" [ngClass]="clasec">{{ message }}</div>
+    <div *ngIf="resp?.error?.msg" class="text-danger">{{ resp.error.msg }}</div>
+    <div *ngIf="resp?.error?.sqlstate == '00000'" class="text-success">
+      Datos insertados correctamente
+      
+    </div>
+  </div>
+  <button type="button" class="btn btn-primary" routerLink="/principal">Volver</button>
+  

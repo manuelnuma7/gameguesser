@@ -1,0 +1,56 @@
+<div class="container">
+  <ul>
+    <li *ngFor="let nombreJuego of nombresJuegos">{{ nombreJuego }}</li>
+  </ul>
+  <h1 class="text-center">{{ titulo }}</h1>
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img [src]="datos[1].imagenes[0]" class="d-block w-100" alt="Imagen 1">
+          </div>
+          <div class="carousel-item" *ngIf="datos && datos.length >= 2">
+            <img [src]="datos[1].imagenes[1]" class="d-block w-100" alt="Imagen 2">
+          </div>
+          <div class="carousel-item" *ngIf="datos && datos.length >= 3">
+            <img [src]="datos[1].imagenes[2]" class="d-block w-100" alt="Imagen 3">
+          </div>
+          <div class="carousel-item" *ngIf="datos && datos.length >= 4">
+            <img [src]="datos[1].imagenes[3] " class="d-block w-100" alt="Imagen 4">
+          </div>
+          <div class="carousel-item" *ngIf="datos && datos.length >= 5">
+            <img [src]="datos[1].imagenes[4] " class="d-block w-100" alt="Imagen 5">
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center mt-4">
+    <div class="col-6">
+      <form (ngSubmit)="enviarRespuesta()">
+        <input type="text" class="form-control" [(ngModel)]="respuesta" name="palabraClave" placeholder="Ingresa la palabra clave" required>
+      </form>
+    </div>
+    <div class="col-6">
+      <button type="submit" class="btn btn-primary" (click)="enviarRespuesta()">Enviar</button>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col text-center">
+      <p *ngIf="mensajeResultado">{{ mensajeResultado }}</p>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col text-center">
+    </div>
+  </div>
+</div>

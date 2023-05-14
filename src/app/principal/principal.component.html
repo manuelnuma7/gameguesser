@@ -1,0 +1,25 @@
+<div class="container my-5">
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <img src="./assets/images/logo.png" alt="Logo de la página" class="img-fluid d-block mx-auto mb-4">
+      <form (ngSubmit)="entradalogin()" [formGroup]="newloginForm" *ngIf="!isLoggedIn" (ngSubmit)="entradalogin()">
+        <div class="form-group">
+          <label for="username">Nombre de usuario</label>
+          <input type="text" class="form-control" formControlName="nombre" id="username" name="nombre" placeholder="Introduce tu nombre de usuario">
+        </div>
+        <div class="form-group">
+          <label for="password">Contraseña</label>
+          <input type="password" formControlName="clave" class="form-control" id="password" name="clave" placeholder="Introduce tu contraseña">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary" [disabled]="newloginForm.invalid">Entrar</button>
+          <button type="button" class="btn btn-link" routerLink="/newlog">Crear usuario</button>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="fallo">
+      Nombre de usuario o contraseña no válidos
+      </div>
+      <p #welcomeMessageElement id="welcomeMessage"></p>
+  </div>
+</div>

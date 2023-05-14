@@ -1,0 +1,14 @@
+<div class="container">
+    <h1>Usuario</h1>
+    
+    <ng-container *ngIf="usuario; else noSesionTemplate">
+      <p>¡Bienvenido, {{ usuario }}!</p>
+      <button class="btn btn-danger" (click)="cerrarSesion()">Cerrar Sesión</button>
+    </ng-container>
+  
+    <ng-template #noSesionTemplate>
+      <div class="alert alert-secondary text-center">
+        <p>Primero debes iniciar sesión</p>
+      </div>
+    </ng-template>
+  </div>

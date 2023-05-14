@@ -1,0 +1,16 @@
+<table class="table table-success table-striped table-hover">
+    <thead>
+      <th>Nombre</th>
+      <th>email</th>
+      <th>password</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let uno of datos">
+        <td>{{ uno.id }}</td>
+        <td>{{ uno.nombre }}</td>
+        <td>{{ uno.email }}</td>
+        <td>{{ uno.clave }}</td>
+        <td>{{ uno.admin }}</td>
+      </tr>
+    </tbody>
+  </table>
