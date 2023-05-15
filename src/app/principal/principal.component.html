@@ -1,4 +1,5 @@
-<div class="container my-5">
+
+<div class="container my-5" *ngIf="checkSessionCookie(); else noSessionMessage">
   <div class="row">
     <div class="col-md-6 mx-auto">
       <img src="./assets/images/logo.png" alt="Logo de la página" class="img-fluid d-block mx-auto mb-4">
@@ -17,9 +18,21 @@
         </div>
       </form>
     </div>
-    <div *ngIf="fallo">
+    <div class="error" *ngIf="fallo">
       Nombre de usuario o contraseña no válidos
       </div>
       <p #welcomeMessageElement id="welcomeMessage"></p>
   </div>
 </div>
+
+<ng-template #noSessionMessage>
+  <div class="cookies-overlay"  >
+    <div class="cookies-container">
+      <p class="cookies-message">Este sitio web utiliza cookies. Al continuar navegando, aceptas nuestra política de cookies.</p>
+      <div class="cookies-buttons">
+        <button class="btn btn-primary" (click)="aceptarPoliticaCookies()">Aceptar</button>
+        <button class="btn btn-secondary" (click)="rechazarPoliticaCookies()">Rechazar</button>
+      </div>
+    </div>
+  </div>
+  </ng-template>

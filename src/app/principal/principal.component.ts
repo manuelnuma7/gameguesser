@@ -18,7 +18,8 @@ export class PrincipalComponent implements AfterViewInit {
   @ViewChild('welcomeMessageElement', { static: true }) welcomeMessageElement!: ElementRef;
   
   fallo:boolean=false;
-  cookieService: any;
+  aceptarCookies = false;
+
   constructor(
     private servicioService: ServicioService,
     private fb: FormBuilder,
@@ -41,8 +42,14 @@ export class PrincipalComponent implements AfterViewInit {
     const sessionCookieExists = this.CookieService.check('session');
     if (sessionCookieExists) {
       const valorCookie = this.CookieService.get('session');
-      this.welcomeMessageElement.nativeElement.textContent = `Bienvenido ${valorCookie}`;
+      if (this.welcomeMessageElement) { // Verificar si welcomeMessageElement está definido
+        this.welcomeMessageElement.nativeElement.textContent = `Bienvenido ${valorCookie}`;
+      }
       this.isLoggedIn = true;
+    }
+    const politicaCookieExists = this.CookieService.check('Politica');
+    if (politicaCookieExists) {
+      this.aceptarCookies = true;
     }
   }
   entradalogin() {
@@ -53,14 +60,29 @@ export class PrincipalComponent implements AfterViewInit {
         const currentDate = new Date();
         const expirationDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
         this.CookieService.set('session', data[0].nombre,expirationDate);
-        this.welcomeMessageElement.nativeElement.textContent = `Bienvenido ${this.nombre}`;
+        // this.welcomeMessageElement.nativeElement.textContent = `Bienvenido ${this.nombre}`;
         this.isLoggedIn = true;
-        this.router.navigateByUrl('jugar');}
+         this.router.navigateByUrl('jugar');
+      }
       else {this.fallo=true;}
     });
 
   }
 
+  aceptarPoliticaCookies() {
+    const currentDate = new Date();
+    const expirationDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
+    this.CookieService.set('Politica', 'aceptada', expirationDate);
+    this.aceptarCookies = true;
+  }
+  
+  rechazarPoliticaCookies() {
+    // No hacer nada, simplemente cierra el div de aceptación de cookies
+  }
+  checkSessionCookie(): boolean {
+    const sessionCookie = document.cookie.includes('Politica');
+    return sessionCookie;
+  }
   
   
 

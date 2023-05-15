@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./jugar.component.css']
 })
 export class JugarComponent {
+  checkSessionCookie(): boolean {
+    const sessionCookie = document.cookie.includes('session');
+    return sessionCookie;
+  }
 
 }

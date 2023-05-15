@@ -12,20 +12,31 @@ export class JuegoimagenComponent {
   @HostListener('window:beforeunload', ['$event'])
   titulo: string = 'guess gameplay';
   datos!: Juego[];
-  primerJuego: Juego | undefined;
-  urlPrimeraImagen: string | undefined;
   respuesta: string = '';
   vidas: number = 5;
   mensajeResultado: string = '';
+  
   nombresJuegos: string[] = [];
 
   constructor(private servicioService: ServicioService) {
     servicioService.getDatosJuego().subscribe(datos => {
       this.datos = datos;
-      this.primerJuego = this.datos[5];
-      this.urlPrimeraImagen = this.primerJuego.imagenes[0] || '';
-      this.generarArrayNombresJuegos();
+      const nombresJuegos = [];
+      for (const juego of this.datos) {
+        nombresJuegos.push(juego.nombre);
+      } 
+      const longitudArray = nombresJuegos.length;
+      const numeroAleatorio = this.generarNumeroAleatorio(longitudArray);
+      console.log("Longitud del array: " + longitudArray);
+      console.log("Número aleatorio: " + numeroAleatorio);
+      const palabrasecreta= datos[numeroAleatorio].nombre ;
+      console.log("palabra: " + palabrasecreta);
     });
+
+  }
+
+  generarNumeroAleatorio(max: number) {
+    return Math.floor(Math.random() * max);
   }
 
   enviarRespuesta() {

@@ -24,3 +24,21 @@
   .game-image:not(.game-image-available) {
     filter: grayscale(100%);
   }
+  .overlay {
+    position: fixed;
+    top: 25vh;
+    left: 25vw;
+    width: 50%;
+    height: 50%;
+    background-color: rgba(80, 76, 76, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+ 
+  .message {
+    text-align: center;
+    font-size: x-large;
+  }
+  

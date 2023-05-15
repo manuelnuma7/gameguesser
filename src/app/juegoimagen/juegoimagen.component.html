@@ -8,7 +8,7 @@
       <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img [src]="datos[1].imagenes[0]" class="d-block w-100" alt="Imagen 1">
+            <img [src]="datos[0].imagenes[0]" class="d-block w-100" alt="Imagen 1">
           </div>
           <div class="carousel-item" *ngIf="datos && datos.length >= 2">
             <img [src]="datos[1].imagenes[1]" class="d-block w-100" alt="Imagen 2">
@@ -47,8 +47,7 @@
   <div class="row mt-5">
     <div class="col text-center">
       <p *ngIf="mensajeResultado">{{ mensajeResultado }}</p>
-    </div>
-  </div>
+      
   <div class="row mt-5">
     <div class="col text-center">
     </div>
