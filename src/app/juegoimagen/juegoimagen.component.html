@@ -1,6 +1,7 @@
 <div class="container">
   <h1 class="text-center">{{ titulo }}</h1>
-
+  <!-- div de puntuacion arriba de la imagen centrado , {{puntos}} -->
+  <div class="puntuacion text-center">PUNTOS: {{ puntos }}</div>
   <div class="row justify-content-center">
     <div class="col-6">
       <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -65,12 +66,12 @@
   </div>
   <div class="row mt-5">
     <div class="col text-center">
-      <p *ngIf="mensajeganar">{{ mensajeganar }}</p>
+      <p *ngIf="mensajePerder">{{ mensajePerder }}</p>
     </div>
   </div>
   <div class="row mt-5">
     <div class="col text-center">
-      <p *ngIf="mensajePerder">{{ mensajePerder }}</p>
+      <p *ngIf="mensajeganar">{{ mensajeganar }}</p>
     </div>
   </div>
 </div>

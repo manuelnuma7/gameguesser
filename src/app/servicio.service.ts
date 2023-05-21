@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from './model/usuario';
 import { Juego } from './model/juego';
-
+import { Ranking } from './model/ranking';
 @Injectable({
   providedIn: 'root'
 })
@@ -30,7 +30,14 @@ export class ServicioService {
     return this.http.get<Juego[]>(`${this.url}juego/leerJuegotry.php`);
   }
 
-  
+  postDatoRanking(nuevo: any): Observable<any> {
+    return this.http.post(`${this.url}ranking/insertarRanking.php`, nuevo);
+  }
+
+  getDatosRanking():  Observable<Ranking[]> {
+    return this.http.get<Ranking[]>(`${this.url}ranking/leerRanking.php`);
+  }
+
 }
 
 

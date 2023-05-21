@@ -1,19 +1,24 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { ServicioService } from '../servicio.service';
 import { Juego } from '../model/juego';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-juegoimagen',
   templateUrl: './juegoimagen.component.html',
   styleUrls: ['./juegoimagen.component.css']
 })
-export class JuegoimagenComponent {
+export class JuegoimagenComponent implements OnInit {
   titulo: string = 'guess gameplay';
   datos!: Juego[];
   respuesta: string = '';
   vidas: number = 0;
   mensajeResultado: string = '';
+  puntos: number=0;
+  listaJuegos: string[] = [];
+  
   mensajePerderVida: string = '';
   mensajeganar: string = '';
   numeroAleatorio: number = 0;
@@ -21,9 +26,17 @@ export class JuegoimagenComponent {
   nombresJuegos: Array<{ nombre: string; imagenes: string[] }> = [];
   mensajePerder: string = '';
 
+  ngOnInit() {
+    
+    const puntoscookie = this.cookieService.get('puntos');
+    this.puntos = parseInt(puntoscookie, 10) || 0;
+    
+  }
+
   constructor(
     private servicioService: ServicioService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router
   ) {
     const sessionCookieExists = this.cookieService.check('game');
     if (!sessionCookieExists) {
@@ -52,7 +65,22 @@ export class JuegoimagenComponent {
     const nombresJuegosCookie = this.cookieService.get('game');
     this.nombresJuegos = JSON.parse(nombresJuegosCookie);
 
-    // al ranking
+    if (!this.nombresJuegos || this.nombresJuegos.length === 0) {
+
+      const nombreuser = this.cookieService.get('session');
+const nuevo = {
+  nombre: nombreuser,
+  puntos: this.puntos
+};
+
+this.servicioService.postDatoRanking(nuevo).subscribe((datos) => {
+  console.log("Datos enviados al servidor:", datos);
+});
+
+
+      this.router.navigate(['/ranking']);
+      return;
+    }
     const longitudArray = this.nombresJuegos.length;
     const numeroAleatorio = this.generarNumeroAleatorio(longitudArray);
     this.numeroAleatorio = numeroAleatorio;
@@ -63,6 +91,8 @@ export class JuegoimagenComponent {
       currentDate.getMonth() + 1,
       currentDate.getDate()
     );
+    const puntoscookie = this.cookieService.get('puntos');
+      this.puntos = parseInt(puntoscookie, 10);
     this.cookieService.set('palabra', this.palabrasecreta, expirationDate);
     this.cookieService.set('numero', numeroAleatorio.toString(), expirationDate);
     this.cookieService.set('vidas', '5', expirationDate);
@@ -81,6 +111,35 @@ export class JuegoimagenComponent {
       this.mensajeResultado = '¡Respuesta correcta!';
       const gameData = JSON.parse(gameCookie);
       const numero = parseInt(this.cookieService.get('numero'), 10);
+
+      const puntoscookie = this.cookieService.get('puntos');
+      this.puntos = parseInt(puntoscookie, 10);
+      const vidascookie = this.cookieService.get('vidas');
+      this.vidas = parseInt(vidascookie, 10);
+
+      if(this.vidas==5){
+        this.puntos+=5;
+
+      }else if(this.vidas==4){
+        this.puntos+=4;
+      }else if(this.vidas==3){
+        this.puntos+=3;
+      }else if(this.vidas==2){
+        this.puntos+=2;
+      }else{
+        this.puntos+=1;
+      }
+      const currentDate = new Date();
+    const expirationDate = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + 1,
+      currentDate.getDate()
+    );
+
+      this.cookieService.set('vidas', this.vidas.toString(), expirationDate);
+      this.cookieService.set('puntos', this.puntos.toString(), expirationDate);
+
+
 
       if (Array.isArray(gameData) && numero >= 0 && numero < gameData.length) {
         gameData.splice(numero, 1);
@@ -104,6 +163,16 @@ export class JuegoimagenComponent {
       this.cookieService.set('vidas', this.vidas.toString(), expirationDate);
       if (this.vidas <= 0) {
         this.mensajePerder = 'Has perdido todas tus vidas. Intenta de nuevo.';
+        const nombreuser = this.cookieService.get('session');
+        const nuevo = {
+          nombre: nombreuser,
+          puntos: this.puntos
+        };
+
+        this.servicioService.postDatoRanking(nuevo).subscribe((datos) => {
+          console.log("Datos enviados al servidor:", datos);
+        });
+
       } else {
         this.mensajePerderVida = `Respuesta incorrecta. Te quedan ${this.vidas} vidas.`;
        
@@ -115,7 +184,8 @@ export class JuegoimagenComponent {
   generarArrayNombresJuegos() {
     this.nombresJuegos = [];
     for (const juego of this.datos) {
-      const nombreJuego = juego.nombre;
+       const nombreJuego = juego.nombre;
+      // this.listaJuegos.push(nombreJuego);
       const imagenesJuego = juego.imagenes.slice(0, 5).filter((imagen) => imagen !== null) as string[];
       const juegoObjeto = {
         nombre: nombreJuego,
@@ -123,11 +193,17 @@ export class JuegoimagenComponent {
       };
       this.nombresJuegos.push(juegoObjeto);
     }
+    for (const juego of this.datos) {
+      const nombreJuego = juego.nombre;
+      this.listaJuegos.push(nombreJuego);
+    }
 
     const currentDate = new Date();
     const expirationDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, currentDate.getDate());
     this.cookieService.set('game', JSON.stringify(this.nombresJuegos), expirationDate);
     this.cookieService.set('vidas', '5', expirationDate);
+    this.cookieService.set('listajuegos', JSON.stringify(this.listaJuegos), expirationDate);
+    this.cookieService.set('puntos', "0", expirationDate);
     location.reload();
   }
 

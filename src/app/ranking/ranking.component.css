@@ -1,0 +1,10 @@
+.btn-fixed-bottom-center {
+    position: fixed;
+    bottom: 30px; /* Ajusta el valor según tus necesidades */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  
+  
+  

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-05-2023 a las 19:33:28
+-- Tiempo de generación: 21-05-2023 a las 22:11:27
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -155,19 +155,6 @@ INSERT INTO `imagen` (`id_imagen`, `id_biblioteca_juego`, `nombre`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `juego`
---
-
-CREATE TABLE `juego` (
-  `id_juego` int(1) NOT NULL,
-  `id_biblioteca_juego` int(3) NOT NULL,
-  `vidas` int(1) NOT NULL,
-  `nombre` varchar(40) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `musica`
 --
 
@@ -253,10 +240,17 @@ INSERT INTO `plataforma_juego` (`id_plataforma`, `id_biblioteca_juego`) VALUES
 CREATE TABLE `ranking` (
   `id_ranking` int(1) NOT NULL,
   `id` int(3) NOT NULL,
-  `id_juego` int(1) NOT NULL,
   `puntos` int(3) DEFAULT NULL,
   `dificultad` int(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ranking`
+--
+
+INSERT INTO `ranking` (`id_ranking`, `id`, `puntos`, `dificultad`) VALUES
+(1, 1, 15, NULL),
+(2, 15, 25, NULL);
 
 -- --------------------------------------------------------
 
@@ -280,9 +274,9 @@ INSERT INTO `usuario` (`id`, `nombre`, `email`, `clave`, `admin`) VALUES
 (1, 'manu', 'manu@gmail.com', '1234', 1),
 (2, 'ruben', 'ruben@gmail.com', '1234', 0),
 (3, 'laura', 'laura@gmail.com', '1234', 0),
-(4, 'henry', 'henry@gmail.com', '1234', 0),
-(6, 'felipe', 'dasdsa@gmail.com', '1234', 0),
-(7, 'jose', 'jose@gmail.com', '1234', 0);
+(13, 'pablo', 'pablo@gmail.com', '1234', 0),
+(14, 'fer', 'fer@gmail.com', '1234', 0),
+(15, 'jose', 'jose@gmail.com', '1234', 0);
 
 --
 -- Índices para tablas volcadas
@@ -315,13 +309,6 @@ ALTER TABLE `imagen`
   ADD KEY `fk_imagen_biblioteca_juego` (`id_biblioteca_juego`);
 
 --
--- Indices de la tabla `juego`
---
-ALTER TABLE `juego`
-  ADD PRIMARY KEY (`id_juego`),
-  ADD KEY `fk_juego_biblioteca_juego` (`id_biblioteca_juego`);
-
---
 -- Indices de la tabla `musica`
 --
 ALTER TABLE `musica`
@@ -346,8 +333,7 @@ ALTER TABLE `plataforma_juego`
 --
 ALTER TABLE `ranking`
   ADD PRIMARY KEY (`id_ranking`),
-  ADD KEY `fk_ranking_usuario` (`id`),
-  ADD KEY `fk_ranking_juego` (`id_juego`);
+  ADD KEY `fk_ranking_usuario` (`id`);
 
 --
 -- Indices de la tabla `usuario`
@@ -379,12 +365,6 @@ ALTER TABLE `imagen`
   MODIFY `id_imagen` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT de la tabla `juego`
---
-ALTER TABLE `juego`
-  MODIFY `id_juego` int(1) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT de la tabla `musica`
 --
 ALTER TABLE `musica`
@@ -400,13 +380,13 @@ ALTER TABLE `plataforma`
 -- AUTO_INCREMENT de la tabla `ranking`
 --
 ALTER TABLE `ranking`
-  MODIFY `id_ranking` int(1) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_ranking` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(3) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Restricciones para tablas volcadas
@@ -426,12 +406,6 @@ ALTER TABLE `imagen`
   ADD CONSTRAINT `fk_imagen_biblioteca_juego` FOREIGN KEY (`id_biblioteca_juego`) REFERENCES `biblioteca_juego` (`id_biblioteca_juego`);
 
 --
--- Filtros para la tabla `juego`
---
-ALTER TABLE `juego`
-  ADD CONSTRAINT `fk_juego_biblioteca_juego` FOREIGN KEY (`id_biblioteca_juego`) REFERENCES `biblioteca_juego` (`id_biblioteca_juego`);
-
---
 -- Filtros para la tabla `musica`
 --
 ALTER TABLE `musica`
@@ -448,7 +422,6 @@ ALTER TABLE `plataforma_juego`
 -- Filtros para la tabla `ranking`
 --
 ALTER TABLE `ranking`
-  ADD CONSTRAINT `fk_ranking_juego` FOREIGN KEY (`id_juego`) REFERENCES `juego` (`id_juego`),
   ADD CONSTRAINT `fk_ranking_usuario` FOREIGN KEY (`id`) REFERENCES `usuario` (`id`);
 COMMIT;
 

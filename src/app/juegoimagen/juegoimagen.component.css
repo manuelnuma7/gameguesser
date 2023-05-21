@@ -9,3 +9,52 @@ h1 {
   input {
     margin-top: 20px;
   }
+  .container {
+    margin-top: 20px;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .puntuacion {
+    font-size: 24px;
+    margin-top: 10px;
+  }
+  
+  .carousel-navigation {
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+  .carousel-navigation-button {
+    background-color: #ddd;
+    border: none;
+    color: black;
+    padding: 8px 12px;
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  
+  .carousel-navigation-button.active {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .form-control {
+    margin-bottom: 10px;
+  }
+  
+  .btn-primary {
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+  
+  .row > .col.text-center {
+    margin-top: 10px;
+  }
+  
+  .row > .col.text-center > p {
+    font-size: 18px;
+  }
+  

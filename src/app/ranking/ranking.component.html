@@ -1,1 +1,17 @@
-<p>ranking works!</p>
+<div>
+    <h1 class="text-center">RANKING</h1>
+    <table class="table table-success table-striped table-hover">
+      <thead>
+        <th>Nombre</th>
+        <th>puntos</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let uno of datos">
+          <td>{{ uno.nombre }}</td>
+          <td>{{ uno.puntos }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-primary btn-fixed-bottom-center" (click)="guardarRanking()">Guardar Ranking</button>
+  </div>
+  

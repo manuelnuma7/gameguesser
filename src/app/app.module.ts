@@ -16,6 +16,8 @@ import { NewlogComponent } from './newlog/newlog.component';
 import { ServicioService } from './servicio.service';
 import { CookieService } from 'ngx-cookie-service';
 import { JuegoimagenComponent } from './juegoimagen/juegoimagen.component';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 
 
@@ -37,8 +39,9 @@ import { JuegoimagenComponent } from './juegoimagen/juegoimagen.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule
+    
   ],
-  providers: [ServicioService,CookieService],
+  providers: [ServicioService,CookieService, { provide: 'jspdf', useValue: jsPDF }  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
