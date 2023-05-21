@@ -1,36 +1,43 @@
 <div class="container">
-  <ul>
-    <li *ngFor="let nombreJuego of nombresJuegos">{{ nombreJuego }}</li>
-  </ul>
   <h1 class="text-center">{{ titulo }}</h1>
+
   <div class="row justify-content-center">
     <div class="col-6">
       <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img [src]="datos[0].imagenes[0]" class="d-block w-100" alt="Imagen 1">
+          <div class="carousel-item" [class.active]="vidas <= 5">
+            <img [src]="nombresJuegos[numeroAleatorio].imagenes[0]" class="d-block w-100" alt="Imagen 1">
           </div>
-          <div class="carousel-item" *ngIf="datos && datos.length >= 2">
-            <img [src]="datos[1].imagenes[1]" class="d-block w-100" alt="Imagen 2">
+          <div class="carousel-item" *ngIf="vidas <= 4">
+            <img [src]="nombresJuegos[numeroAleatorio].imagenes[1]" class="d-block w-100" alt="Imagen 2">
           </div>
-          <div class="carousel-item" *ngIf="datos && datos.length >= 3">
-            <img [src]="datos[1].imagenes[2]" class="d-block w-100" alt="Imagen 3">
+          <div class="carousel-item" *ngIf="vidas <= 3">
+            <img [src]="nombresJuegos[numeroAleatorio].imagenes[2]" class="d-block w-100" alt="Imagen 3">
           </div>
-          <div class="carousel-item" *ngIf="datos && datos.length >= 4">
-            <img [src]="datos[1].imagenes[3] " class="d-block w-100" alt="Imagen 4">
+          <div class="carousel-item" *ngIf="vidas <= 2">
+            <img [src]="nombresJuegos[numeroAleatorio].imagenes[3]" class="d-block w-100" alt="Imagen 4">
           </div>
-          <div class="carousel-item" *ngIf="datos && datos.length >= 5">
-            <img [src]="datos[1].imagenes[4] " class="d-block w-100" alt="Imagen 5">
+          <div class="carousel-item" *ngIf="vidas <= 1">
+            <img [src]="nombresJuegos[numeroAleatorio].imagenes[4]" class="d-block w-100" alt="Imagen 5">
           </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
+        <div class="carousel-navigation">
+          <button class="carousel-navigation-button" [class.active]="vidas <= 5" (click)="goToSlide(0)">
+            1
+          </button>
+          <button class="carousel-navigation-button" *ngIf="vidas <= 4" (click)="goToSlide(1)">
+            2
+          </button>
+          <button class="carousel-navigation-button" *ngIf="vidas <= 3" (click)="goToSlide(2)">
+            3
+          </button>
+          <button class="carousel-navigation-button" *ngIf="vidas <= 2" (click)="goToSlide(3)">
+            4
+          </button>
+          <button class="carousel-navigation-button" *ngIf="vidas <= 1" (click)="goToSlide(4)">
+            5
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -41,15 +48,29 @@
       </form>
     </div>
     <div class="col-6">
-      <button type="submit" class="btn btn-primary" (click)="enviarRespuesta()">Enviar</button>
+      <button type="submit" class="btn btn-primary" [disabled]="vidas === 0 || mensajeResultado" (click)="enviarRespuesta()">Enviar</button>
+      <button class="btn btn-primary" [disabled]="!mensajeResultado" (click)="seleccionarPalabraSecreta()">Continuar</button>
+      <button class="btn btn-primary" [disabled]="vidas !== 0   " (click)="reiniciar()">Jugar de nuevo</button>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col text-center">
+      <p *ngIf="mensajePerderVida">{{ mensajePerderVida }}</p>
     </div>
   </div>
   <div class="row mt-5">
     <div class="col text-center">
       <p *ngIf="mensajeResultado">{{ mensajeResultado }}</p>
-      
+    </div>
+  </div>
   <div class="row mt-5">
     <div class="col text-center">
+      <p *ngIf="mensajeganar">{{ mensajeganar }}</p>
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col text-center">
+      <p *ngIf="mensajePerder">{{ mensajePerder }}</p>
     </div>
   </div>
 </div>

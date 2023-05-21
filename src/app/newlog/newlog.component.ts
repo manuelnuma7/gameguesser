@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Usuario } from '../model/usuario';
 import { ServicioService } from '../servicio.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-newlog',
@@ -23,6 +24,7 @@ export class NewlogComponent {
   public clasec: string = '';
   public clases: string = 'text-info';
   resp: any;
+  actuales$!: Observable<Usuario[]>;;
 
   constructor(
     private servicioService: ServicioService,
@@ -47,7 +49,11 @@ export class NewlogComponent {
       console.log('Entrada correcta', this.newusuario);
       this.servicioService
         .postDato(this.newusuario)
-        .subscribe((resp) => (this.resp = resp));
+        .subscribe({
+          next: resp => this.resp = resp,
+          error: err => console.log(err),
+          complete: () => this.actuales$=this.servicioService.getDatosUsuario()
+        });
     }
   }
 
