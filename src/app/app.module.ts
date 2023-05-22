@@ -21,6 +21,7 @@ import 'jspdf-autotable';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

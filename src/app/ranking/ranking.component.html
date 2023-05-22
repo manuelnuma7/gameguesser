@@ -3,7 +3,7 @@
     <table class="table table-success table-striped table-hover">
       <thead>
         <th>Nombre</th>
-        <th>puntos</th>
+        <th>Puntos</th>
       </thead>
       <tbody>
         <tr *ngFor="let uno of datos">
@@ -12,6 +12,11 @@
         </tr>
       </tbody>
     </table>
+    <button class="btn btn-primary" (click)="toggleGrafica()">Mostrar gráfica de puntos</button>
+    <div *ngIf="mostrarGrafica" class="grafica-contenedor">
+      <div id="grafica"></div>
+      <button class="btn btn-secondary" (click)="toggleGrafica()">Cerrar gráfica</button>
+    </div>
     <button class="btn btn-primary btn-fixed-bottom-center" (click)="guardarRanking()">Guardar Ranking</button>
   </div>
   

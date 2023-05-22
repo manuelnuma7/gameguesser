@@ -1,6 +1,5 @@
 <div class="container">
   <h1 class="text-center">{{ titulo }}</h1>
-  <!-- div de puntuacion arriba de la imagen centrado , {{puntos}} -->
   <div class="puntuacion text-center">PUNTOS: {{ puntos }}</div>
   <div class="row justify-content-center">
     <div class="col-6">
@@ -44,9 +43,15 @@
   </div>
   <div class="row justify-content-center mt-4">
     <div class="col-6">
-      <form (ngSubmit)="enviarRespuesta()">
-        <input type="text" class="form-control" [(ngModel)]="respuesta" name="palabraClave" placeholder="Ingresa la palabra clave" required>
+      <form>
+        <input type="text" class="form-control" [(ngModel)]="respuesta" [formControl]="juegoControl" name="palabraClave" placeholder="Ingresa la palabra clave" required autocomplete="off">
+      
+        <ul class="juegos-desplegable" *ngIf="juegoControl.value">
+          <li *ngFor="let juego of juegosFiltrados | async" (click)="seleccionarJuego(juego)">{{ juego }}</li>
+          <li *ngIf="(juegosFiltrados | async)?.length === 0">No hay resultados</li>
+        </ul>
       </form>
+      
     </div>
     <div class="col-6">
       <button type="submit" class="btn btn-primary" [disabled]="vidas === 0 || mensajeResultado" (click)="enviarRespuesta()">Enviar</button>

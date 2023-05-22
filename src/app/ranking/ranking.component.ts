@@ -1,21 +1,33 @@
-import { Component } from '@angular/core';
+import { Component,OnInit  } from '@angular/core';
 import { ServicioService } from '../servicio.service';
 import { Ranking } from '../model/ranking';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
+declare var google: any;
+
 
 @Component({
   selector: 'app-ranking',
   templateUrl: './ranking.component.html',
   styleUrls: ['./ranking.component.css']
 })
-export class RankingComponent {
+export class RankingComponent implements OnInit {
   datos!: Ranking[];
-
+  mostrarGrafica: boolean = false;
+  googleChartsLoaded: boolean = false;
+  
   constructor(private servicioService: ServicioService) {
 
-    servicioService.getDatosRanking().subscribe(datos=>this.datos=datos);
-  }
+    servicioService.getDatosRanking().subscribe(datos => {
+      this.datos = datos;
+      
+    });  }
+    ngOnInit() {
+      google.charts.load('current', { 'packages': ['corechart'] });
+      google.charts.setOnLoadCallback(() => {
+        this.googleChartsLoaded = true;
+      });
+    }
   
   guardarRanking() {
     const doc = new jsPDF();
@@ -42,5 +54,36 @@ export class RankingComponent {
     doc.save('ranking.pdf');
   }
 
+  toggleGrafica() {
+    if (!this.googleChartsLoaded) {
+      return;
+    }
 
+    this.mostrarGrafica = !this.mostrarGrafica;
+
+    if (this.mostrarGrafica) {
+      setTimeout(() => {
+        const data = new google.visualization.DataTable();
+        data.addColumn('string', 'Nombre');
+        data.addColumn('number', 'Puntos');
+
+        // Llenar los datos de la tabla
+        const rows = this.datos.map((dato: any) => [dato.nombre, dato.puntos]);
+        data.addRows(rows);
+
+        const options = {
+          title: 'Ranking de Puntos',
+          width: 500,
+          height: 400
+        };
+
+        const chart = new google.visualization.BarChart(document.getElementById('grafica'));
+        chart.draw(data, options);
+      }, 0);
+    }
+  }
+
+  cerrarGrafica() {
+    this.mostrarGrafica = false;
+  }
 }

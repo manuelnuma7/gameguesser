@@ -3,6 +3,9 @@ import { ServicioService } from '../servicio.service';
 import { Juego } from '../model/juego';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 
 
 @Component({
@@ -18,6 +21,8 @@ export class JuegoimagenComponent implements OnInit {
   mensajeResultado: string = '';
   puntos: number=0;
   listaJuegos: string[] = [];
+  juegoControl = new FormControl();
+  juegosFiltrados!: Observable<string[]>;
   
   mensajePerderVida: string = '';
   mensajeganar: string = '';
@@ -27,9 +32,21 @@ export class JuegoimagenComponent implements OnInit {
   mensajePerder: string = '';
 
   ngOnInit() {
+
+    const listaJuegosCookie = this.cookieService.get('listajuegos');
+  if (listaJuegosCookie) {
+    this.listaJuegos = JSON.parse(listaJuegosCookie);
+  }
     
     const puntoscookie = this.cookieService.get('puntos');
     this.puntos = parseInt(puntoscookie, 10) || 0;
+
+
+
+    this.juegosFiltrados = this.juegoControl.valueChanges.pipe(
+      startWith(''),
+      map((value) => this.filtrarJuegos(value))
+    );
     
   }
 
@@ -55,8 +72,12 @@ export class JuegoimagenComponent implements OnInit {
       const vidascookie = this.cookieService.get('vidas');
       this.vidas = parseInt(vidascookie, 10);
     }
+    this.juegosFiltrados = this.juegoControl.valueChanges.pipe(
+      map(value => value ? this.filtrarJuegos(value) : this.listaJuegos)
+    );
   }
 
+ 
   generarNumeroAleatorio(max: number) {
     return Math.floor(Math.random() * max);
   }
@@ -105,10 +126,12 @@ this.servicioService.postDatoRanking(nuevo).subscribe((datos) => {
       this.mensajeganar = 'Has acertado todos los juegos.';
       return;
     }
-
+    this.palabrasecreta = this.cookieService.get('palabra');
     const juegoActual = this.palabrasecreta;
     if (this.respuesta.toLowerCase() === juegoActual.toLowerCase()) {
       this.mensajeResultado = '¡Respuesta correcta!';
+      this.mensajePerderVida="";
+
       const gameData = JSON.parse(gameCookie);
       const numero = parseInt(this.cookieService.get('numero'), 10);
 
@@ -185,7 +208,6 @@ this.servicioService.postDatoRanking(nuevo).subscribe((datos) => {
     this.nombresJuegos = [];
     for (const juego of this.datos) {
        const nombreJuego = juego.nombre;
-      // this.listaJuegos.push(nombreJuego);
       const imagenesJuego = juego.imagenes.slice(0, 5).filter((imagen) => imagen !== null) as string[];
       const juegoObjeto = {
         nombre: nombreJuego,
@@ -223,5 +245,11 @@ this.servicioService.postDatoRanking(nuevo).subscribe((datos) => {
     document.cookie = `game=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     location.reload();
   }
-
+  seleccionarJuego(juego: string) {
+    this.juegoControl.setValue(juego);
+  }
+  filtrarJuegos(keyword: string): string[] {
+    return this.listaJuegos.filter(juego => juego.toLowerCase().includes(keyword.toLowerCase()));
+  }
+  
 }
